@@ -26,7 +26,7 @@ function loadWordFromFile(file, callback) {
   }
   
   // テキストファイルのパスを指定して単語を読み込みと表示を行う
-  loadWordFromFile("word.txt", displayWord);
+  loadWordFromFile("name.txt", displayWord);
 //ここまで  
 
 //クイズ出題・正誤判定
