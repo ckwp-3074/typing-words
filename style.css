@@ -1,0 +1,88 @@
+@charset "utf-8";
+
+/*アコーディオンメニュー*/
+.accordion-008 {
+    max-width: 500px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 7px 15px -5px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+}
+
+.accordion-008 summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 1em 2em;
+    color: #333333;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.accordion-008 summary::-webkit-details-marker {
+    display: none;
+}
+
+.accordion-008 summary::after {
+    transform: translateY(-25%) rotate(45deg);
+    width: 7px;
+    height: 7px;
+    margin-left: 10px;
+    border-bottom: 3px solid rgba(51, 51, 51, 0.7);
+    border-right: 3px solid rgba(51, 51, 51, 0.7);
+    content: '';
+    transition: transform 0.3s;
+}
+
+.accordion-008[open] summary::after {
+    transform: rotate(225deg);
+}
+
+.accordion-008 p {
+    transform: translateY(-10px);
+    opacity: 0;
+    margin: 0;
+    padding: 0.3em 2em 1.5em;
+    color: #333333;
+    transition: transform 0.5s, opacity 0.5s;
+}
+
+.accordion-008[open] p {
+    transform: none;
+    opacity: 1;
+}
+
+/*アコーディオンメニューここまで*/
+
+/*CAUTION*/
+.box28 {
+    position: relative;
+    margin: 2em 0;
+    padding: 25px 10px 7px;
+    border: solid 2px #FFC107;
+}
+.box28 .box-title {
+    position: absolute;
+    display: inline-block;
+    top: -2px;
+    left: -2px;
+    padding: 0 9px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 17px;
+    background: #FFC107;
+    color: #ffffff;
+    font-weight: bold;
+}
+.box28 p {
+    margin: 0; 
+    padding: 0;
+}
+   /*ここまで*/
+
+body {
+    font-family: 'Zen Kaku Gothic New', 'Zen Maru Gothic', sans-serif;
+    background-color: gainsboro;
+}
+
