@@ -1,3 +1,36 @@
+//title,h4タグ記載
+
+// テキストファイルから単語を読み込む関数
+function loadWordFromFile(file, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", file, true);
+  
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        var word = xhr.responseText.trim();
+        callback(word);
+      }
+    };
+  
+    xhr.send();
+  }
+  
+  // 単語を表示するための関数
+  function displayWord(word) {
+    // タイトルの表示
+    document.title = word + " - 用語タイピング";
+  
+    // h4タグの表示
+    var h4Element = document.querySelector(".container h4");
+    h4Element.textContent = "～" + word + "～";
+  }
+  
+  // テキストファイルのパスを指定して単語を読み込みと表示を行う
+  loadWordFromFile("word.txt", displayWord);
+//ここまで  
+
+//クイズ出題・正誤判定
+
 // CSVファイルから問題を読み込む関数
 function loadQuestionsFromCSV(file) {
   var xhr = new XMLHttpRequest();
@@ -201,4 +234,5 @@ function shuffle(array) {
 
   return array;
 }
+//ここまで
 ;
