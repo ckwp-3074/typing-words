@@ -32,7 +32,6 @@ function loadWordFromFile(file, callback) {
 //クイズ出題・正誤判定
 
 // CSVファイルから問題と解答を読み込む関数
-// CSVファイルから問題文と模範解答を読み込む関数
 function loadQuestionsFromCSV(file) {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", file, false);
@@ -44,8 +43,9 @@ function loadQuestionsFromCSV(file) {
     for (var i = 0; i < lines.length; i++) {
       var parts = lines[i].split(",");
       var question = {
-        question: parts[0], // 問題文を取得
-        correctAnswer: parts[1] // 模範解答を取得
+        question: parts[0],                  // 問題文
+        correctAnswer: parts[1],             // 模範解答
+        choices: generateRandomChoices(parts.slice(1), parts[1])  // ランダムな選択肢を生成
       };
       questions.push(question);
     }
@@ -53,42 +53,25 @@ function loadQuestionsFromCSV(file) {
     return questions;
   }
   
-  // 問題文と解答群を表示する関数
+  // 問題を表示する関数
   function displayQuestion() {
     var questionElement = document.getElementById("question");
     var choicesElement = document.getElementById("choices");
   
-    // シャッフルされた問題を取得
-    var shuffledQuestion = shuffledQuestions[currentQuestion];
+    var currentQuestionData = shuffledQuestions[currentQuestion];
   
-    questionElement.textContent = shuffledQuestion.question; // 問題文を表示
-    //choicesElement.innerHTML = ""; // 解答群をクリア
+    questionElement.textContent = currentQuestionData.question;
   
-    // ランダムな順番で模範解答とダミー解答を表示
-    var answers = [shuffledQuestion.correctAnswer]; // 正解を含む解答群
+    // 選択肢を表示
+    choicesElement.innerHTML = ""; // 選択肢をクリア
   
-    // ダミー解答を追加（模範解答以外の問題からランダムに選択）
-    while (answers.length < 4) {
-      var randomIndex = Math.floor(Math.random() * questions.length);
-      var randomQuestion = questions[randomIndex];
-      var randomAnswer = randomQuestion.correctAnswer;
-      if (!answers.includes(randomAnswer)) {
-        answers.push(randomAnswer);
-      }
-    }
-  
-    // 解答群をシャッフル
-    answers = shuffle(answers);
-  
-    // 解答群を表示
-    for (var i = 0; i < answers.length; i++) {
+    for (var i = 0; i < currentQuestionData.choices.length; i++) {
       var choice = document.createElement("li");
-      choice.textContent = answers[i];
+      choice.textContent = currentQuestionData.choices[i];
       choicesElement.appendChild(choice);
     }
-  
-    document.getElementById("answer").value = ""; // 解答欄をリセット
   }
+  
   
   // 問題文と解答群をシャッフルする関数
   function shuffle(array) {
@@ -105,6 +88,75 @@ function loadQuestionsFromCSV(file) {
   
     return array;
   }
+
+  function generateRandomChoices(allAnswers, correctAnswer) {
+  // 全ての模範解答から正解を除いた配列を作成
+  var choicesWithoutCorrect = allAnswers.filter(answer => answer !== correctAnswer);
+
+  // ランダムに3つの選択肢を選ぶ
+  var randomChoices = [];
+  while (randomChoices.length < 3 && choicesWithoutCorrect.length > 0) {
+    var randomIndex = Math.floor(Math.random() * choicesWithoutCorrect.length);
+    randomChoices.push(choicesWithoutCorrect.splice(randomIndex, 1)[0]);
+  }
+
+  // 正解を含めて選択肢をシャッフル
+  randomChoices.push(correctAnswer);
+  randomChoices = shuffle(randomChoices);
+
+  return randomChoices;
+}
+
+// 配列をランダムにシャッフルする関数
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  while (0 !== currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+function generateRandomChoices(allAnswers, correctAnswer) {
+    // 全ての模範解答から正解を除いた配列を作成
+    var choicesWithoutCorrect = allAnswers.filter(answer => answer !== correctAnswer);
+  
+    // ランダムに3つの選択肢を選ぶ
+    var randomChoices = [];
+    while (randomChoices.length < 3 && choicesWithoutCorrect.length > 0) {
+      var randomIndex = Math.floor(Math.random() * choicesWithoutCorrect.length);
+      randomChoices.push(choicesWithoutCorrect.splice(randomIndex, 1)[0]);
+    }
+  
+    // 正解を含めて選択肢をシャッフル
+    randomChoices.push(correctAnswer);
+    randomChoices = shuffle(randomChoices);
+  
+    return randomChoices;
+  }
+  
+  // 配列をランダムにシャッフルする関数
+  function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+  
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
+  }
+  
   
   var questions = loadQuestionsFromCSV("questions.csv");
   var shuffledQuestions = shuffle(questions);
