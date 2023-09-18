@@ -45,14 +45,14 @@ function loadQuestionsFromCSV(file) {
       var question = {
         question: parts[0], // 問題を取得
         choices: [parts[1], parts[2], parts[3], parts[4]], // 解答群を取得
-        correctAnswer: parts[5] // 模範解答を取得
+        correctAnswer: parts[5].trim() // 模範解答を取得
       };
       questions.push(question);
     }
   
     return questions;
   }
-  
+    
 var questions = loadQuestionsFromCSV("questions.csv");
 var shuffledQuestions = [];
 var currentQuestion = 0;
