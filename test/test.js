@@ -82,9 +82,13 @@ function displayQuestion() {
     questionElement.textContent = shuffledQuestions[currentQuestion].question;
     choicesElement.innerHTML = ""; // 解答群をクリア
   
-    for (var i = 0; i < shuffledQuestions[currentQuestion].choices.length; i++) {
+    var choices = shuffledQuestions[currentQuestion].choices;
+    for (var i = 0; i < choices.length; i++) {
       var choice = document.createElement("li");
-      choice.textContent = shuffledQuestions[currentQuestion].choices[i];
+      choice.textContent = choices[i];
+      choice.addEventListener("click", function () {
+        checkAnswer(this.textContent); // 解答をクリックしたときに正誤判定を行う
+      });
       choicesElement.appendChild(choice);
     }
   
@@ -107,22 +111,20 @@ function displayQuestion() {
       container.style.backgroundColor = "red";
     }
   }
+    
+  function checkAnswer(selectedAnswer) {
+    var correctAnswer = shuffledQuestions[currentQuestion].correctAnswer;
   
-function checkAnswer() {
-var answer = document.getElementById("answer").value.trim();
-var correctAnswer = shuffledQuestions[currentQuestion].correctAnswer.trim();
-
-if (answer.toLowerCase() === correctAnswer.toLowerCase()) {
-score++;
-alert("正解！");
-nextQuestion();
-} else {
-alert("違うぞっ！！");
-document.getElementById("answer").value = "";
-retryButton.style.display = "inline-block";
-}
-}
-
+    if (selectedAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+      score++;
+      alert("正解！");
+    } else {
+      alert("違うぞっ！！");
+    }
+  
+    nextQuestion();
+  }
+  
 function displayResult(isCorrect) {
 if (isCorrect) {
 setTimeout(function() {
