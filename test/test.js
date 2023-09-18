@@ -31,7 +31,7 @@ function loadWordFromFile(file, callback) {
 
 //クイズ出題・正誤判定
 
-// CSVファイルから問題と模範解答を読み込む関数
+// CSVファイルから問題と解答を読み込む関数
 function loadQuestionsFromCSV(file) {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", file, false);
@@ -41,17 +41,18 @@ function loadQuestionsFromCSV(file) {
     var questions = [];
   
     for (var i = 0; i < lines.length; i++) {
-    var parts = lines[i].split(",");
-    var question = {
-      question: parts[0], // 問題を取得
-      correctAnswer: parts[1] // 模範解答を取得
-    };
-    questions.push(question);
+      var parts = lines[i].split(",");
+      var question = {
+        question: parts[0], // 問題を取得
+        choices: [parts[1], parts[2], parts[3], parts[4]], // 解答群を取得
+        correctAnswer: parts[5] // 模範解答を取得
+      };
+      questions.push(question);
+    }
+  
+    return questions;
   }
-
-  return questions;
-}
-
+  
 var questions = loadQuestionsFromCSV("questions.csv");
 var shuffledQuestions = [];
 var currentQuestion = 0;
@@ -74,39 +75,39 @@ function startQuiz() {
 }
 
 function displayQuestion() {
-  var questionElement = document.getElementById("question");
-  var choicesElement = document.getElementById("choices");
-  var currentQuestionCountElement = document.getElementById("currentQuestionCount");
-
-  questionElement.textContent = shuffledQuestions[currentQuestion].question;
-  choicesElement.innerHTML = "";
-
-  for (var i = 0; i < shuffledQuestions[currentQuestion].choices.length; i++) {
-    var choice = document.createElement("li");
-    choice.textContent = shuffledQuestions[currentQuestion].choices[i];
-    choicesElement.appendChild(choice);
+    var questionElement = document.getElementById("question");
+    var choicesElement = document.getElementById("choices");
+    var currentQuestionCountElement = document.getElementById("currentQuestionCount");
+  
+    questionElement.textContent = shuffledQuestions[currentQuestion].question;
+    choicesElement.innerHTML = ""; // 解答群をクリア
+  
+    for (var i = 0; i < shuffledQuestions[currentQuestion].choices.length; i++) {
+      var choice = document.createElement("li");
+      choice.textContent = shuffledQuestions[currentQuestion].choices[i];
+      choicesElement.appendChild(choice);
+    }
+  
+    document.getElementById("answer").value = ""; // 解答欄をリセット
+    currentQuestionCountElement.textContent = "現在の出題問題数: " + (currentQuestion + 1) + "/" + totalQuestionCount;
+    retryButton.style.display = "none"; // 「もう一度解く」ボタンを非表示
+  
+    // 背景色の設定
+    if (currentQuestion < 20) {
+      container.style.backgroundColor = "white";
+    } else if (currentQuestion < 40) {
+      container.style.backgroundColor = "#e0f7fa"; // 水色
+    } else if (currentQuestion < 60) {
+      container.style.backgroundColor = "#2196f3"; // 青
+    } else if (currentQuestion < 80) {
+      container.style.backgroundColor = "#ff9800"; // オレンジ
+    } else if (currentQuestion < 100) {
+      container.style.backgroundColor = "#9c27b0"; // 紫
+    } else {
+      container.style.backgroundColor = "red";
+    }
   }
-
-  document.getElementById("answer").value = ""; // 解答欄をリセット
-  currentQuestionCountElement.textContent = "現在の出題問題数: " + (currentQuestion + 1) + "/" + totalQuestionCount;
-  retryButton.style.display = "none"; // 「もう一度解く」ボタンを非表示
-
-  // 背景色の設定
-  if (currentQuestion < 20) {
-    container.style.backgroundColor = "white";
-  } else if (currentQuestion < 40) {
-    container.style.backgroundColor = "#e0f7fa"; // 水色
-  } else if (currentQuestion < 60) {
-    container.style.backgroundColor = "#2196f3"; // 青
-  } else if (currentQuestion < 80) {
-    container.style.backgroundColor = "#ff9800"; // オレンジ
-  } else if (currentQuestion < 100) {
-    container.style.backgroundColor = "#9c27b0"; // 紫
-  } else {
-    container.style.backgroundColor = "red";
-  }
-}
-
+  
 function checkAnswer() {
 var answer = document.getElementById("answer").value.trim();
 var correctAnswer = shuffledQuestions[currentQuestion].correctAnswer.trim();
