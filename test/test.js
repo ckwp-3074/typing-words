@@ -32,6 +32,7 @@ function loadWordFromFile(file, callback) {
 //クイズ出題・正誤判定
 
 // CSVファイルから問題と解答を読み込む関数
+// CSVファイルから問題文と模範解答を読み込む関数
 function loadQuestionsFromCSV(file) {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", file, false);
@@ -43,26 +44,73 @@ function loadQuestionsFromCSV(file) {
     for (var i = 0; i < lines.length; i++) {
       var parts = lines[i].split(",");
       var question = {
-        question: parts[0], // 問題を取得
-        choices: [parts[1], parts[2], parts[3], parts[4]], // 解答群を取得
-        correctAnswer: parts[5].trim() // 模範解答を取得
+        question: parts[0], // 問題文を取得
+        correctAnswer: parts[1] // 模範解答を取得
       };
       questions.push(question);
     }
   
     return questions;
   }
-    
-var questions = loadQuestionsFromCSV("questions.csv");
-var shuffledQuestions = [];
-var currentQuestion = 0;
-var score = 0;
-var maxQuestionCount = questions.length; // 出題最高問題数をCSVファイルの問題数に制限
-var totalQuestionCount = questions.length; // 問題の総数;
-var retryButton = document.getElementById("retryButton");
-var skippedQuestionsElement = document.getElementById("skippedQuestions");
-var container = document.querySelector(".container");
-var skippedQuestions = [];
+  
+  // 問題文と解答群を表示する関数
+  function displayQuestion() {
+    var questionElement = document.getElementById("question");
+    var choicesElement = document.getElementById("choices");
+  
+    // シャッフルされた問題を取得
+    var shuffledQuestion = shuffledQuestions[currentQuestion];
+  
+    questionElement.textContent = shuffledQuestion.question; // 問題文を表示
+    choicesElement.innerHTML = ""; // 解答群をクリア
+  
+    // ランダムな順番で模範解答とダミー解答を表示
+    var answers = [shuffledQuestion.correctAnswer]; // 正解を含む解答群
+  
+    // ダミー解答を追加（模範解答以外の問題からランダムに選択）
+    while (answers.length < 4) {
+      var randomIndex = Math.floor(Math.random() * questions.length);
+      var randomQuestion = questions[randomIndex];
+      var randomAnswer = randomQuestion.correctAnswer;
+      if (!answers.includes(randomAnswer)) {
+        answers.push(randomAnswer);
+      }
+    }
+  
+    // 解答群をシャッフル
+    answers = shuffle(answers);
+  
+    // 解答群を表示
+    for (var i = 0; i < answers.length; i++) {
+      var choice = document.createElement("li");
+      choice.textContent = answers[i];
+      choicesElement.appendChild(choice);
+    }
+  
+    document.getElementById("answer").value = ""; // 解答欄をリセット
+  }
+  
+  // 問題文と解答群をシャッフルする関数
+  function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+  
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
+  }
+  
+  var questions = loadQuestionsFromCSV("questions.csv");
+  var shuffledQuestions = shuffle(questions);
+  var currentQuestion = 0;
+  displayQuestion();
+  
 
 function startQuiz() {
   document.getElementById("startScreen").style.display = "none"; // スタート画面を非表示
