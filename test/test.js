@@ -62,7 +62,7 @@ function loadQuestionsFromCSV(file) {
     var shuffledQuestion = shuffledQuestions[currentQuestion];
   
     questionElement.textContent = shuffledQuestion.question; // 問題文を表示
-    choicesElement.innerHTML = ""; // 解答群をクリア
+    //choicesElement.innerHTML = ""; // 解答群をクリア
   
     // ランダムな順番で模範解答とダミー解答を表示
     var answers = [shuffledQuestion.correctAnswer]; // 正解を含む解答群
@@ -128,7 +128,7 @@ function displayQuestion() {
     var currentQuestionCountElement = document.getElementById("currentQuestionCount");
   
     questionElement.textContent = shuffledQuestions[currentQuestion].question;
-    choicesElement.innerHTML = ""; // 解答群をクリア
+    //choicesElement.innerHTML = ""; // 解答群をクリア
   
     var choices = shuffledQuestions[currentQuestion].choices;
     for (var i = 0; i < choices.length; i++) {
