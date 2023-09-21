@@ -4,7 +4,7 @@
 再計算が行われるごとに、最小値以上最大値以下の乱数を返す。なお、最小値及び最大値は正と負どちらも設定できる。,SUBSTITUTE,IFERROR,RANDBETWEEN,MODE,RANDBETWEEN
 回帰直線上の値を返す。,COLUMN,ROW,IFERROR,FORECAST,FORECAST
 指定された範囲(数値)の中央値を求める。,MODE,MEDIAN,COLUMN,ROW,MEDIAN
-指定された範囲で、最も頻繁に出現する値(最頻値)を求める。,OFFSET,INDEX,MODE,CEILING,MODE
+指定された範囲で、最も頻繁に出現する値(最頻値)を求める。,OFFSET,INDEX,MODE,MEDIAN,MODE
 指定した参照から行数と列数だけシフトした位置にあるセル範囲の参照を返す。セル範囲は、［高さ］と［幅］で指定された範囲となる。,INDEX,IFERROR,OFFSET,FLOOR,OFFSET
 参照で指定したセルの列番号を求める。引数を省略した場合は、関数を入力したセルの列番号を表示する。,FLOOR,ABS,COLUMN,ROW,COLUMN
 参照で指定したセルの行番号を求める。引数を省略した場合は、関数を入力したセルの行番号を表示する。,ROW,MODE,FORECAST,RANDBETWEEN,ROW
