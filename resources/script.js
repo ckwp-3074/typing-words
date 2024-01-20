@@ -96,15 +96,15 @@ function displayQuestion() {
   if (currentQuestion < 20) {
     container.style.backgroundColor = "white";
   } else if (currentQuestion < 40) {
-    container.style.backgroundColor = "#e0f7fa"; // 水色
+    container.style.backgroundColor = "white"; // 水色
   } else if (currentQuestion < 60) {
-    container.style.backgroundColor = "#2196f3"; // 青
+    container.style.backgroundColor = "white"; // 青
   } else if (currentQuestion < 80) {
-    container.style.backgroundColor = "#ff9800"; // オレンジ
+    container.style.backgroundColor = "white"; // オレンジ
   } else if (currentQuestion < 100) {
-    container.style.backgroundColor = "#9c27b0"; // 紫
+    container.style.backgroundColor = "white"; // 紫
   } else {
-    container.style.backgroundColor = "red";
+    container.style.backgroundColor = "white";
   }
 }
 
